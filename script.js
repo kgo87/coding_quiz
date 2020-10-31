@@ -1,41 +1,4 @@
-
-var timerEl = document.getElementById("timer");
-var startButton = document.getElementById("start_button");
-var startPage = document.getElementById("quiz_intro");
-
-
-var timeDisplay = document.getElementById('timer')
-var main = document.getElementsByTagName('main')[0]
-var viewHighscoreLink = document.getElementById('view_highscore_link')
-var questionNumbersBox = document.getElementById('question_numbers_box')
-var quiz_page = document.getElementById("question_page")
-var questionDisplay = document.getElementById('question_display')
-var answersList = document.getElementById('answer_list')
-var firstAnswer = document.getElementById('answer1')
-var secondAnswer = document.getElementById('answer2')
-var thirdAnswer = document.getElementById('answer3')
-var fourthAnswer = document.getElementById('answer4')
-var answerFeedback = document.getElementById('feedback')
-var scoreDisplay = document.getElementById('score_display')
-var namePage = document.getElementById('get_name_page')
-var initialsInput = document.getElementById('initials_input')
-var submitInitialsButton = document.getElementById('submit_initials_button')
-var highscorePage = document.getElementById('highscore_page')
-var highscoreList = document.getElementById('highscore_list')
-var goToStartingPageButton = document.getElementById('go_to_starting_page_button')
-var clearHighscoresButton = document.getElementById('clear_highscores_button')
-
-
-var startingTime = 75;
-var subtractedTime = 10;
-var intervalTimer;
-var timeLeft; 
-var score;
-var quizOver = false
-
-
-
-// Quiz multiple choice questions
+// Here is a list of multiple choice questions and their answers
 var questions = [ 
     {
         "question": "Which built-in method combines the text of two strings and returns a new string?",
@@ -54,7 +17,7 @@ var questions = [
 
     }, {
         "question": "Which is the correct 'if' statements to execute certain code if 'x' is equal to 2?",
-        "answers": ["if(x 2)","if x=2","if(x!=2)","if(x==2) { }"],
+        "answers": ["if(x 2)","if x=2","if(x!=2)","if(x===2) { }"],
         "correct":3
 
     },{
@@ -63,7 +26,7 @@ var questions = [
         "correct": 2
     }, {
         "question": "Which of the following is a good debugging tool during the code development?",
-        "answers": ["google.com","console.log","StackOverflow","gitHub"],
+        "answers": ["google.com","console.log()","StackOverflow","gitHub"],
         "correct": 1
     }, {
         "question": "How to ask the user if they want to reload the page?",
@@ -75,7 +38,7 @@ var questions = [
         "correct":3
 
     },{
-        "question": "For loop is enclosed with the following:",
+        "question": "'For' loop is enclosed with the following:",
         "answers": ["quotes","curly brackets","square brackets","parentheses"],
         "correct": 3
     }
@@ -83,14 +46,46 @@ var questions = [
 
 
 
+// Selecting the proper tags, id_elements and class_elements
+
+var startPage = document.getElementById("quiz_intro");
+var startButton = document.getElementById("start_button");
+var timerEl = document.getElementById("timer");
+var viewScores = document.getElementById("btn_scores");
+var quiz_page = document.getElementById("list_questions");
+var presentQuestions = document.getElementById("question");
+var listOfAnswers = document.getElementById("answers");
+var firstAnswer = document.getElementById("answer1");
+var secondAnswer = document.getElementById("answer2");
+var thirdAnswer = document.getElementById("answer3");
+var fourthAnswer = document.getElementById("answer4");
+var correctOrWrong = document.getElementById("assessment");
+var namePage = document.getElementById("results");
+var presentScores = document.getElementById("final_score");
+var inputYourInitials = document.getElementById("initials");
+var submitYourInitials = document.getElementById("btn_submit_initials");
+var highscorePage = document.getElementById("show_scores");
+var earnedScores = document.getElementById("earned_scores");
+var homeButton = document.getElementById('home_btn')
+var clearScores = document.getElementById('btn_clear_scores')
 
 
-// var i = 0;
+var startingTime = 75;
+var subtractedTime = 10;
+var intervalTimer;
+var timeLeft; 
+var quizOver = false
+var nextQuestionIndex 
+var randomizedQuestions 
+var question_number = 0
+var score = 0
+var finalScore = 0
+
+
 
 
 function quizTime() {
   timeLeft = startingTime;
-
   var timeInterval = setInterval(function() {
     timerEl.textContent = timeLeft;
     timeLeft--;
@@ -111,33 +106,13 @@ function startQuiz() {
     startPage.setAttribute(
         "style",
         "display: none");
-
 }
 
 
-function randomizeArray(array) {
-    array_copy = [...array]
-    result = []
-    while (array_copy.length > 0) {
-        let r = Math.floor(Math.random() * array_copy.length);
-        let i = array_copy.splice(r, 1)[0]
-        result.push(i)
-    }
-    return result
-}
-
-var nextQuestionIndex 
-var randomizedQuestions 
 
 /** Display the questions page. */
 function displayQuestionPage() {
-
     quiz_page.classList.remove("hidden");
-
-    // create a randomly sorted clone of the questions array to use for this quiz
-    randomizedQuestions = randomizeArray(questions)
-
-    // reset the values to back to their defaults
     nextQuestionIndex = 0
     score = 0
     question_number = 0
@@ -149,12 +124,10 @@ function displayQuestionPage() {
     showQuestion(question_number)
 }
 
-var question_number = 0
-var score = 0
-var finalScore = 0
+
 
 function showQuestion(question_index){
-    questionDisplay.textContent = questions[question_index].question;
+    presentQuestions.textContent = questions[question_index].question;
     firstAnswer.textContent = questions[question_index].answers[0];
     secondAnswer.textContent = questions[question_index].answers[1];
     thirdAnswer.textContent = questions[question_index].answers[2];
@@ -173,16 +146,16 @@ function nextQuestion(event){
         if (event.target.textContent==answersArray[correctIndex]) {
             console.log("Correct!")
             score++
-            answerFeedback.textContent = "Correct"
+            correctOrWrong.textContent = "Correct"
         }
         else {
             console.log("Incorrect!")
-            answerFeedback.textContent = "Incorrect"
+            correctOrWrong.textContent = "Incorrect"
             timeLeft-=subtractedTime
         }
         question_number++
         showQuestion(question_number)
-        setTimeout(function(){ answerFeedback.textContent=""; }, 1500);
+        setTimeout(function(){ correctOrWrong.textContent=""; }, 1100);
 
     }
     console.log(event.target)
@@ -198,7 +171,7 @@ function quizFinished(){
         finalScore=0
     }
     finalScore = score*timeLeft
-    scoreDisplay.textContent = finalScore
+    presentScores.textContent = finalScore
 
 }
 
@@ -209,21 +182,20 @@ function renderScores(event){
     highscorePage.classList.remove("hidden")
 
     var show_scores = {
-        initials: initialsInput.value.trim(),
+        initials: inputYourInitials.value.trim(),
         score:finalScore
     };
     console.log(show_scores)
 
     localStorage.setItem("show_scores", JSON.stringify(show_scores));
     var lastSubmission = JSON.parse(localStorage.getItem("show_scores"));
-    highscoreList.textContent = lastSubmission.initials + ", score: " +lastSubmission.score;
+    earnedScores.textContent = lastSubmission.initials + ", score: " +lastSubmission.score;
     localStorage.getItem(finalScore);
     
 }
 
 function goToStart(){
     highscorePage.classList.add("hidden")
-    // startPage.classList.add("start_page")
     startPage.setAttribute(
         "style",
         "display: block");
@@ -238,18 +210,25 @@ function clearYourScore(event){
     if (clear) {
         event.preventDefault()
         localStorage.setItem('show_scores', "[]")
-        highscoreList.textContent = "Scores cleared";
+        earnedScores.textContent = "Scores cleared";
     }
+}
+
+function clickHighScoreButton(event){
+    // event.preventDefault();
+    startQuiz();
+    renderScores(event);
 }
 
 
 startButton.addEventListener("click", quizTime);
 startButton.addEventListener("click", startQuiz);
 startButton.addEventListener("click", displayQuestionPage);
-answersList.addEventListener("click", nextQuestion);
-submitInitialsButton.addEventListener("click", renderScores);
-goToStartingPageButton.addEventListener("click", goToStart);
-clearHighscoresButton.addEventListener("click", clearYourScore);
+listOfAnswers.addEventListener("click", nextQuestion);
+submitYourInitials.addEventListener("click", renderScores);
+homeButton.addEventListener("click", goToStart);
+clearScores.addEventListener("click", clearYourScore);
+viewScores.addEventListener("click", clickHighScoreButton);
 
 
 
