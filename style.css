@@ -88,5 +88,10 @@ main #list_questions #answers {
   align-items: start;
 }
 
+#earned_scores{
+  margin:5px;
+  font-style: italic;
+  font-weight: bold;
 
+}
   

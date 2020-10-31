@@ -76,7 +76,6 @@ var intervalTimer;
 var timeLeft; 
 var quizOver = false
 var nextQuestionIndex 
-var randomizedQuestions 
 var question_number = 0
 var score = 0
 var finalScore = 0
@@ -146,11 +145,11 @@ function nextQuestion(event){
         if (event.target.textContent==answersArray[correctIndex]) {
             console.log("Correct!")
             score++
-            correctOrWrong.textContent = "Correct"
+            correctOrWrong.textContent = "Correct!"
         }
         else {
             console.log("Incorrect!")
-            correctOrWrong.textContent = "Incorrect"
+            correctOrWrong.textContent = "Incorrect!"
             timeLeft-=subtractedTime
         }
         question_number++
