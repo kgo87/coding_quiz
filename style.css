@@ -1,15 +1,18 @@
+/* Initializing variables */
 :root{
   --light-color: #eeeef7;
   --purple: purple;
   --gold: goldenrod;
 }
 
+/* Global settings */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
+/* Sets properties of the body */
 body {
     min-height: 100%;
     display: flex;
@@ -18,31 +21,34 @@ body {
     font-size: 18px;
 }
 
+/* Sets display properties of the main */
 main {
     flex: 1 0 auto;
+    width:60%;
+    margin:auto;
+
 }
 
+/* Default property of the .hidden class */
 .hidden{
   display: none;
 }
 
+/* Sets display properties of the header */
 header {
   display: flex;
   justify-content: space-between;
   padding: 10px;
 }
 
-main{
-  width:60%;
-  margin:auto;
-}
-
+/* Sets display properties of the home page */
 .start_page{
   display: flex;
   flex-direction: column;
   text-align: center;
 }
 
+/* Sets properties of the start button */
 #start_button {
   background-color:var(--purple);
   color:var(--light-color);
@@ -54,6 +60,7 @@ main{
   font-weight: bold;
 }
 
+/* Sets properties of other buttons */
 #btn_scores,
 #answer1, 
 #answer2,
@@ -67,6 +74,7 @@ main{
   margin:5px;
 }
 
+/* Sets properties of the buttons at hover */
 #btn_scores:hover,
 #start_button:hover,
 #answer1:hover, 
@@ -81,13 +89,14 @@ main{
   border: solid var(--gold);
 }
 
-
+/* Sets properties of the list of answers*/
 main #list_questions #answers {
   display: inline-flex;
   flex-direction: column;
   align-items: start;
 }
 
+/* Sets properties of the scores*/
 #earned_scores{
   margin:5px;
   font-style: italic;
